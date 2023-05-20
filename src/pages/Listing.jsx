@@ -21,6 +21,8 @@ import {
   FaChair,
 } from "react-icons/fa";
 import { getAuth } from "firebase/auth";
+import Contact from "../components/Contact";
+import home from '../images/home.png'
 
 export default function Listing() {
   const auth = getAuth();
@@ -29,6 +31,7 @@ export default function Listing() {
   const [loading, setLoading] = useState(true);
   const [shareLinkCopied, setShareLinkCopied] = useState(false);
   const [contactLandlord, setContactLandlord] = useState(false);
+
   SwiperCore.use([Autoplay, Navigation, Pagination]);
   useEffect(() => {
     async function fetchListing() {
@@ -135,6 +138,28 @@ export default function Listing() {
             </li>
           </ul>
        
+          {listing.userRef !== auth.currentUser?.uid && !contactLandlord && (
+          <div className="mt-6">
+          <button
+          onClick={() => setContactLandlord(true)}
+          className="px-7 py-3 bg-black text-white font-medium text-sm uppercase rounded shadow-md  hover:bg-opacity-80 hover:shadow-lg focus:shadow-lg w-full text-center transition duration-150 ease-in-out "
+          >Contact LandLord
+          </button>
+          </div>
+          )}
+          {contactLandlord && (
+            <Contact 
+            userRef={listing.userRef}
+            listing={listing}  
+            />
+          )}
+            
+         </div>
+
+         <div className="w-full h-[200px] md:h-[400px] z-10 overflow-x-hidden mt-6 md:mt-0 md:ml-2">
+           <img 
+           src={home} 
+           alt="home"/>
          </div>
       </div>
     </main>
